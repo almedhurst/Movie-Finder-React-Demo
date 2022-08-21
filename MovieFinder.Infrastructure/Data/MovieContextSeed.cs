@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using MovieFinder.Core.Entities;
@@ -14,6 +15,7 @@ public sealed class MovieContextSeed : IDisposable
 {
     private readonly MovieContext _context;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly UserManager<User> _userManager;
 
     private List<Actor> _actors = new();
     private List<Category> _categories = new();
@@ -21,13 +23,14 @@ public sealed class MovieContextSeed : IDisposable
     private List<Title> _titles = new();
     private List<Writer> _writers = new();
 
-    public MovieContextSeed(MovieContext context, ILoggerFactory loggerFactory)
+    public MovieContextSeed(MovieContext context, UserManager<User> userManager, ILoggerFactory loggerFactory)
     {
-        _loggerFactory = loggerFactory;
         _context = context;
+        _userManager = userManager;
+        _loggerFactory = loggerFactory;
     }
 
-    public void StartSeed()
+    public void StartMovieSeed()
     {
         var logger = _loggerFactory.CreateLogger<MovieContextSeed>();
         try
@@ -81,6 +84,20 @@ public sealed class MovieContextSeed : IDisposable
         catch (Exception ex)
         {
             logger.LogError(ex.Message);
+        }
+    }
+
+    public async Task StartUserSeed()
+    {
+        if(!_userManager.Users.Any())
+        {
+            var user = new User
+            {
+                UserName = "bob",
+                Email = "bob@test.com",
+                GivenName = "Bob Jones"
+            };
+            await _userManager.CreateAsync(user, "Pa$$w0rd");
         }
     }
 

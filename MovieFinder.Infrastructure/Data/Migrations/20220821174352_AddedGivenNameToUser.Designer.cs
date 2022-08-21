@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieFinder.Infrastructure.Data;
 
@@ -10,9 +11,10 @@ using MovieFinder.Infrastructure.Data;
 namespace MovieFinder.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    partial class MovieContextModelSnapshot : ModelSnapshot
+    [Migration("20220821174352_AddedGivenNameToUser")]
+    partial class AddedGivenNameToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -375,6 +377,7 @@ namespace MovieFinder.Infrastructure.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Comments")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TitleId")
