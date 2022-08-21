@@ -12,7 +12,7 @@ public static class QueryableExtensions
         var categoryList = new List<string>();
 
         if (!string.IsNullOrWhiteSpace(movieParams.Categories))
-            movieParams.Categories.Split(",").ToList();
+            categoryList = movieParams.Categories.Split(",").ToList();
         
         switch (movieParams.OrderBy)
         {

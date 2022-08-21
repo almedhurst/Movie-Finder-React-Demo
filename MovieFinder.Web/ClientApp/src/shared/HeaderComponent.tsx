@@ -1,7 +1,10 @@
-import { AppBar, Box, FormControlLabel, FormGroup, styled, Switch, Toolbar, Typography } from "@mui/material";
+import {AppBar, Box, Button, FormControlLabel, FormGroup, styled, Switch, Toolbar, Typography} from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { setDarkMode } from "../core/slices/siteAppearanceSlice";
 import {useAppDispatch, useAppSelector} from "../core/store/configureStore";
+import {fetchCategoriesAsync} from "../core/slices/categorySlice";
+import {useEffect} from "react";
+import CategoryMenu from "./CategoryMenu";
 
 const navStyles = {
     textDecoration: 'none',
@@ -18,9 +21,11 @@ export default function HeaderComponent(){
     const dispatch = useAppDispatch();
     const {darkMode} = useAppSelector(state => state.siteAppearance);
     
+    
     const ChangeDarkMode = (event: any) => {
         dispatch(setDarkMode(event.target.checked));
     }
+    
     
     return(
         <>
@@ -28,15 +33,26 @@ export default function HeaderComponent(){
                 <Toolbar sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Box display='flex' alignItems='center'>
                         <Typography variant='h6' component={NavLink} to='/' sx={navStyles}>
-                            Movie finder
+                            MOVIE FINDER
                         </Typography>
+                    </Box>
+                    <Box display='flex' alignItems='center'>
+                        <CategoryMenu/>
+                        <Button
+                            color='inherit'
+                            sx={{typography: 'h6'}}
+                            component={NavLink}
+                            to='/search'
+                        >
+                            Search
+                        </Button>
                     </Box>
                     <Box display='flex' alignItems='center'>
                         <FormGroup>
                             <FormControlLabel control={<Switch
                                 checked={darkMode}
                                 onChange={ChangeDarkMode}></Switch>}
-                                              label='Dark Mode'
+                                              label='DARK MODE'
                                               labelPlacement='start'/>
                         </FormGroup>
                     </Box>

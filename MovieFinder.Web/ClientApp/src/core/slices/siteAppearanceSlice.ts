@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
+import {ListView} from "../enums/listView";
 
 interface SiteAppearanceState {
-    darkMode: boolean
+    darkMode: boolean,
+    listView: ListView
 }
 
 const initialState: SiteAppearanceState = {
-    darkMode: false
+    darkMode: false,
+    listView: ListView.Grid
 }
 
 const loadStorageKey = "siteAppearence";
@@ -18,12 +21,17 @@ export const siteAppearanceSlice = createSlice({
             state.darkMode =  action.payload;
             localStorage.setItem(loadStorageKey, JSON.stringify(state));
         },
+        setListView:(state, action) => {
+            state.listView = action.payload;
+            localStorage.setItem(loadStorageKey, JSON.stringify(state));
+        },
         loadingSaveState: (state) => {
             var appearenceData = localStorage.getItem(loadStorageKey);
             var appearanceJson = appearenceData !== null ? JSON.parse(appearenceData) : null;
-            if(typeof appearanceJson.darkMode === 'boolean') state.darkMode = appearanceJson.darkMode
+            if(typeof appearanceJson.darkMode === 'boolean') state.darkMode = appearanceJson.darkMode;
+            if(typeof appearanceJson.listView === 'number') state.listView = appearanceJson.listView;
         }
     }
 })
 
-export const {setDarkMode, loadingSaveState} = siteAppearanceSlice.actions;
+export const {setDarkMode, loadingSaveState, setListView} = siteAppearanceSlice.actions;

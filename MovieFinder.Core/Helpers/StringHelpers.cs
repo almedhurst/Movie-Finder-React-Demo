@@ -1,4 +1,6 @@
-﻿namespace MovieFinder.Core.Helpers;
+﻿using System.Globalization;
+
+namespace MovieFinder.Core.Helpers;
 
 public static class StringHelpers
 {
@@ -23,5 +25,11 @@ public static class StringHelpers
     {
         return new string(Enumerable.Repeat(CharList, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    public static string toTitleCase(this string input)
+    {
+        TextInfo textInfo = new CultureInfo("en-US",false).TextInfo;
+        return textInfo.ToTitleCase(input);
     }
 }

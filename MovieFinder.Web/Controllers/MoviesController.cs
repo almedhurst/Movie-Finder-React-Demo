@@ -2,6 +2,7 @@
 using MovieFinder.Core.Dtos;
 using MovieFinder.Core.RequestHelpers;
 using MovieFinder.Core.Services;
+using MovieFinder.Web.Extensions;
 
 namespace MovieFinder.Web.Controllers;
 
@@ -15,12 +16,14 @@ public class MoviesController : BaseApiController
     }
     
     [HttpGet]
-    public async Task<ActionResult<PaginatedDto<MovieDto>>> GetMovies([FromQuery] MovieParams movieParams, int pageNumber = 1, int pageSize = 50)
+    public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies([FromQuery] MovieParams movieParams, int pageNumber = 1, int pageSize = 50)
     {
         if(pageNumber < 1) pageNumber = 1;
         if (pageSize > 50) pageSize = 50;
-        if (pageSize < 10) pageSize = 10;
-        return await _movieService.GetMovies(movieParams,pageNumber, pageSize);
+        if (pageSize < 3) pageSize = 3;
+        var data = await _movieService.GetMovies(movieParams,pageNumber, pageSize);
+        Response.AddPaginationHeader(data.PaginationMeta);
+        return Ok(data.Data);
     }
 
     [HttpGet]
@@ -30,5 +33,12 @@ public class MoviesController : BaseApiController
         if (data == null) return NotFound();
 
         return data;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CategoryMovieDto>>> GetRandomMoviesByRandomCategories()
+    {
+        var data = await _movieService.GetRandomMoviesByRandomCategories();
+        return Ok(data);
     }
 }

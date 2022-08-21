@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieFinder.Infrastructure.Data;
 using MovieFinder.Web.Configuration;
+using MovieFinder.Web.Middleware;
 
 namespace MovieFinder.Web
 {
@@ -32,6 +33,8 @@ namespace MovieFinder.Web
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
+            app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseSwagger();

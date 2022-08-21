@@ -1,10 +1,16 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {siteAppearanceSlice} from "../slices/siteAppearanceSlice";
+import {categorySlice} from "../slices/categorySlice";
+import {randomMovieSlice} from "../slices/randomMovieSlice";
+import {movieSlice} from "../slices/movieSlice";
 
 export const store = configureStore({
     reducer: {
-        siteAppearance: siteAppearanceSlice.reducer
+        siteAppearance: siteAppearanceSlice.reducer,
+        category: categorySlice.reducer,
+        randomMovie: randomMovieSlice.reducer,
+        movie: movieSlice.reducer
     }
 });
 

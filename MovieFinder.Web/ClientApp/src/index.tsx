@@ -15,7 +15,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-
         <HistoryRouter history={history}>
             <Provider store={store}>
                 <App/>

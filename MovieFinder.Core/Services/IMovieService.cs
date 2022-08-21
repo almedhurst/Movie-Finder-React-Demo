@@ -8,4 +8,6 @@ public interface IMovieService
     Task<PaginatedDto<MovieDto>> GetMovies(MovieParams movieParams, int pageIndex = 1, int pageSize = 50);
 
     Task<MovieDto> GetMovie(string movieId);
+
+    Task<IEnumerable<CategoryMovieDto>> GetRandomMoviesByRandomCategories();
 }

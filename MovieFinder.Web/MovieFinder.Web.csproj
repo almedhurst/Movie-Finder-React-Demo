@@ -21,10 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="clientapp\src\core\enums" />
-    <Folder Include="clientapp\src\core\models" />
-    <Folder Include="clientapp\src\core\services" />
-    <Folder Include="clientapp\src\core\utilities" />
+    <TypeScriptCompile Include="clientapp\src\core\enums\listView.ts" />
+    <TypeScriptCompile Include="clientapp\src\core\models\PaginatedDto.ts" />
+    <None Include="clientapp\src\features\MovieListings\MovieList.tsx" />
+    <TypeScriptCompile Include="clientapp\src\features\MovieListings\MovieCardSkeleton.tsx" />
+    <TypeScriptCompile Include="clientapp\src\shared\PaginationComponent.tsx" />
+    <TypeScriptCompile Include="clientapp\src\shared\CheckboxSelectList.tsx" />
+    <TypeScriptCompile Include="clientapp\src\shared\ListModeSelector.tsx" />
+    <TypeScriptCompile Include="clientapp\src\shared\MinMaxSliders.tsx" />
+    <TypeScriptCompile Include="clientapp\src\shared\SelectList.tsx" />
   </ItemGroup>
 
 </Project>

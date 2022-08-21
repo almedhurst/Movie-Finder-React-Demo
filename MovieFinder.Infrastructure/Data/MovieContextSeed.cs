@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using MovieFinder.Core.Entities;
+using MovieFinder.Core.Helpers;
 
 namespace MovieFinder.Infrastructure.Data;
 
@@ -109,10 +110,11 @@ public sealed class MovieContextSeed : IDisposable
         switch (valueKind)
         {
             case JsonValueKind.String:
-                if (!_categories.Any(x => x.Name == value))
+                var formattedValue = value.Trim().toTitleCase();
+                if (!_categories.Any(x => x.Name == formattedValue))
                 {
                     var newCategory = new Category();
-                    newCategory.Name = value;
+                    newCategory.Name = formattedValue;
                     _categories.Add(newCategory);
 
                     var newTitleCategory = new TitleCategory();
@@ -122,7 +124,7 @@ public sealed class MovieContextSeed : IDisposable
                 }
                 else
                 {
-                    var categoryData = _categories.FirstOrDefault(x => x.Name == value);
+                    var categoryData = _categories.FirstOrDefault(x => x.Name == formattedValue);
                     var newTitleCategory = new TitleCategory();
                     newTitleCategory.CategoryId = categoryData.Id;
                     newTitleCategory.Category = categoryData;
@@ -133,10 +135,11 @@ public sealed class MovieContextSeed : IDisposable
                 var arrayData = JsonSerializer.Deserialize<string[]>(value);
                 foreach (var category in arrayData)
                 {
-                    if (!_categories.Any(x => x.Name == category))
+                    var formattedValue2 = category.Trim().toTitleCase();
+                    if (!_categories.Any(x => x.Name == formattedValue2))
                     {
                         var newCategory = new Category();
-                        newCategory.Name = category;
+                        newCategory.Name = formattedValue2;
                         _categories.Add(newCategory);
 
                         var newTitleCategory = new TitleCategory();
@@ -146,7 +149,7 @@ public sealed class MovieContextSeed : IDisposable
                     }
                     else
                     {
-                        var categoryData = _categories.FirstOrDefault(x => x.Name == category);
+                        var categoryData = _categories.FirstOrDefault(x => x.Name == formattedValue2);
                         var newTitleCategory = new TitleCategory();
                         newTitleCategory.CategoryId = categoryData.Id;
                         newTitleCategory.Category = categoryData;
@@ -174,10 +177,11 @@ public sealed class MovieContextSeed : IDisposable
         switch (valueKind)
         {
             case JsonValueKind.String:
-                if (!_directors.Any(x => x.Name == value))
+                var formattedValue = value.Trim().toTitleCase();
+                if (!_directors.Any(x => x.Name == formattedValue))
                 {
                     var newDirector = new Director();
-                    newDirector.Name = value;
+                    newDirector.Name = formattedValue;
                     _directors.Add(newDirector);
                     var newTitleDirector = new TitleDirector();
                     newTitleDirector.DirectorId = newDirector.Id;
@@ -186,7 +190,7 @@ public sealed class MovieContextSeed : IDisposable
                 }
                 else
                 {
-                    var directorData = _directors.FirstOrDefault(x => x.Name == value);
+                    var directorData = _directors.FirstOrDefault(x => x.Name == formattedValue);
                     var newTitleDirector = new TitleDirector();
                     newTitleDirector.DirectorId = directorData.Id;
                     newTitleDirector.Director = directorData;
@@ -197,7 +201,8 @@ public sealed class MovieContextSeed : IDisposable
                 var arrayData = JsonSerializer.Deserialize<string[]>(value);
                 foreach (var data in arrayData)
                 {
-                    if (!_directors.Any(x => x.Name == data))
+                    var formattedValue2 = data.Trim().toTitleCase();
+                    if (!_directors.Any(x => x.Name == formattedValue2))
                     {
                         var newDirector = new Director();
                         newDirector.Name = data;
@@ -209,7 +214,7 @@ public sealed class MovieContextSeed : IDisposable
                     }
                     else
                     {
-                        var directorData = _directors.FirstOrDefault(x => x.Name == data);
+                        var directorData = _directors.FirstOrDefault(x => x.Name == formattedValue2);
                         var newTitleDirector = new TitleDirector();
                         newTitleDirector.DirectorId = directorData.Id;
                         newTitleDirector.Director = directorData;
@@ -243,10 +248,11 @@ public sealed class MovieContextSeed : IDisposable
         switch (valueKind)
         {
             case JsonValueKind.String:
-                if (!_writers.Any(x => x.Name == value))
+                var formattedValue = value.Trim().toTitleCase();
+                if (!_writers.Any(x => x.Name == formattedValue))
                 {
                     var newWriter = new Writer();
-                    newWriter.Name = value;
+                    newWriter.Name = formattedValue;
                     _writers.Add(newWriter);
 
                     var newTitleWriter = new TitleWriter();
@@ -256,7 +262,7 @@ public sealed class MovieContextSeed : IDisposable
                 }
                 else
                 {
-                    var writerData = _writers.FirstOrDefault(x => x.Name == value);
+                    var writerData = _writers.FirstOrDefault(x => x.Name == formattedValue);
                     var newTitleWriter = new TitleWriter();
                     newTitleWriter.WriterId = writerData.Id;
                     newTitleWriter.Writer = writerData;
@@ -267,10 +273,11 @@ public sealed class MovieContextSeed : IDisposable
                 var arrayData = JsonSerializer.Deserialize<string[]>(value);
                 foreach (var writer in arrayData)
                 {
-                    if (!_writers.Any(x => x.Name == writer))
+                    var formattedValue2 = writer.Trim().toTitleCase();
+                    if (!_writers.Any(x => x.Name == formattedValue2))
                     {
                         var newWriter = new Writer();
-                        newWriter.Name = writer;
+                        newWriter.Name = formattedValue2;
                         _writers.Add(newWriter);
 
                         var newTitleWriter = new TitleWriter();
@@ -280,7 +287,7 @@ public sealed class MovieContextSeed : IDisposable
                     }
                     else
                     {
-                        var writerData = _writers.FirstOrDefault(x => x.Name == writer);
+                        var writerData = _writers.FirstOrDefault(x => x.Name == formattedValue2);
                         var newTitleWriter = new TitleWriter();
                         newTitleWriter.WriterId = writerData.Id;
                         newTitleWriter.Writer = writerData;
@@ -305,7 +312,8 @@ public sealed class MovieContextSeed : IDisposable
         switch (valueKind)
         {
             case JsonValueKind.String:
-                if (!_actors.Any(x => x.Name == value))
+                var formattedValue = value.Trim().toTitleCase();
+                if (!_actors.Any(x => x.Name == formattedValue))
                 {
                     var newActor = new Actor();
                     newActor.Name = value;
@@ -318,7 +326,7 @@ public sealed class MovieContextSeed : IDisposable
                 }
                 else
                 {
-                    var actorData = _actors.FirstOrDefault(x => x.Name == value);
+                    var actorData = _actors.FirstOrDefault(x => x.Name == formattedValue);
                     var newTitleActor = new TitleActor();
                     newTitleActor.ActorId = actorData.Id;
                     newTitleActor.Actor = actorData;
@@ -329,10 +337,11 @@ public sealed class MovieContextSeed : IDisposable
                 var arrayData = JsonSerializer.Deserialize<string[]>(value);
                 foreach (var actor in arrayData)
                 {
-                    if (!_actors.Any(x => x.Name == actor))
+                    var formattedValue2 = actor.Trim().toTitleCase();
+                    if (!_actors.Any(x => x.Name == formattedValue2))
                     {
                         var newActor = new Actor();
-                        newActor.Name = actor;
+                        newActor.Name = formattedValue2;
                         _actors.Add(newActor);
 
                         var newTitleActor = new TitleActor();
@@ -342,7 +351,7 @@ public sealed class MovieContextSeed : IDisposable
                     }
                     else
                     {
-                        var actorData = _actors.FirstOrDefault(x => x.Name == actor);
+                        var actorData = _actors.FirstOrDefault(x => x.Name == formattedValue2);
                         var newTitleActor = new TitleActor();
                         newTitleActor.ActorId = actorData.Id;
                         newTitleActor.Actor = actorData;
