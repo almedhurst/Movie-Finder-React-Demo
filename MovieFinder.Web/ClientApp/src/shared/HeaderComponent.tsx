@@ -5,6 +5,8 @@ import {useAppDispatch, useAppSelector} from "../core/store/configureStore";
 import {fetchCategoriesAsync} from "../core/slices/categorySlice";
 import {useEffect} from "react";
 import CategoryMenu from "./CategoryMenu";
+import SignedInMenu from "./SignedInMenu";
+import PrivateComponent from "./PrivateComponent";
 
 const navStyles = {
     textDecoration: 'none',
@@ -20,6 +22,7 @@ const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 export default function HeaderComponent(){
     const dispatch = useAppDispatch();
     const {darkMode} = useAppSelector(state => state.siteAppearance);
+    const {user} = useAppSelector(state => state.account);
     
     
     const ChangeDarkMode = (event: any) => {
@@ -48,6 +51,19 @@ export default function HeaderComponent(){
                         </Button>
                     </Box>
                     <Box display='flex' alignItems='center'>
+                        {!user && (
+                            <Button
+                                color='inherit'
+                                sx={{typography: 'h6'}}
+                                component={NavLink}
+                                to='/login'
+                            >
+                                Sign in
+                            </Button>
+                        )}
+                        <PrivateComponent performRedirect={false}>
+                            <SignedInMenu />
+                        </PrivateComponent>
                         <FormGroup>
                             <FormControlLabel control={<Switch
                                 checked={darkMode}

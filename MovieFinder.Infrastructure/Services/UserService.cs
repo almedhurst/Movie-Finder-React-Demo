@@ -47,12 +47,23 @@ public class UserService : IUserService
     public async Task<List<FavouriteMovieDto>> AddFavouriteMovie(string username, AddRemoveFavouriteMovieDto model)
     {
         var user = await _userManager.FindByNameAsync(username);
-        await _movieContext.UserFavouriteTitles.AddAsync(new UserFavouriteTitle
+        var existingFavourite = await _movieContext.UserFavouriteTitles
+            .FirstOrDefaultAsync(x => x.UserId == user.Id && x.TitleId == model.TitleId);
+
+        if (existingFavourite != null)
         {
-            UserId = user.Id,
-            TitleId = model.TitleId,
-            Comments = model.Comments
-        });
+            existingFavourite.Comments = model.Comments;
+            _movieContext.UserFavouriteTitles.Update(existingFavourite);
+        }
+        else
+        {
+            _movieContext.UserFavouriteTitles.Add(new UserFavouriteTitle
+            {
+                UserId = user.Id,
+                TitleId = model.TitleId,
+                Comments = model.Comments
+            });
+        }
 
         await _movieContext.SaveChangesAsync();
         
