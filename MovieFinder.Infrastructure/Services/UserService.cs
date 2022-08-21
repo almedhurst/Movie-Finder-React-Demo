@@ -53,6 +53,8 @@ public class UserService : IUserService
             TitleId = model.TitleId,
             Comments = model.Comments
         });
+
+        await _movieContext.SaveChangesAsync();
         
         var userData = await GetUserDto(user);
         return userData.FavouriteMovies;
@@ -64,7 +66,11 @@ public class UserService : IUserService
         var favMovie = await _movieContext.UserFavouriteTitles
             .FirstOrDefaultAsync(x => x.UserId == user.Id && x.TitleId == model.TitleId);
 
-        if (favMovie != null) _movieContext.UserFavouriteTitles.Remove(favMovie);
+        if (favMovie != null)
+        {
+            _movieContext.UserFavouriteTitles.Remove(favMovie);
+            await _movieContext.SaveChangesAsync();
+        }
         
         var userData = await GetUserDto(user);
         return userData.FavouriteMovies;
@@ -77,7 +83,7 @@ public class UserService : IUserService
 
         if (favMovies.Any())
         {
-            movies = await _movieContext.Titles.Where(x => favMovies.Any(y => y.TitleId == x.Id)).AddTitleIncludes()
+            movies = await _movieContext.Titles.Where(x => favMovies.Select(y => y.TitleId).Contains(x.Id)).AddTitleIncludes()
                 .ToListAsync();
         }
         
