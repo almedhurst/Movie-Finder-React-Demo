@@ -7,7 +7,7 @@ export default function FavouriteMovies(){
     return (
         <>
             <Typography variant='h1'>Favourite Movies</Typography>
-            {!favouriteMovies ? (
+            {!favouriteMovies || favouriteMovies.length == 0 ? (
               <Typography>You have no favourite movies</Typography>  
             ) : (
                 <Grid container spacing={4}>
