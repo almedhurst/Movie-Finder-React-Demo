@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using MovieFinder.Core.Dtos;
 using MovieFinder.Core.Entities;
+using MovieFinder.Core.Repositories;
 using MovieFinder.Core.Services;
 using MovieFinder.Infrastructure.Data;
 using MovieFinder.Infrastructure.Extensions;
+using MovieFinder.Infrastructure.Specifications;
 
 namespace MovieFinder.Infrastructure.Services;
 
@@ -12,12 +14,15 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
     private ITokenService _tokenService;
-    private MovieContext _movieContext;
+    private readonly IGenericRepository<UserFavouriteTitle> _favouriteTitleRepo;
+    private readonly IGenericRepository<Title> _titleRepo;
 
     public UserService(UserManager<User> userManager,
-        ITokenService tokenService, MovieContext movieContext)
+        ITokenService tokenService, IGenericRepository<UserFavouriteTitle> favouriteTitleRepo,
+        IGenericRepository<Title> titleRepo)
     {
-        _movieContext = movieContext;
+        _titleRepo = titleRepo;
+        _favouriteTitleRepo = favouriteTitleRepo;
         _tokenService = tokenService;
         _userManager = userManager;
     }
@@ -47,25 +52,23 @@ public class UserService : IUserService
     public async Task<List<FavouriteMovieDto>> AddFavouriteMovie(string username, AddRemoveFavouriteMovieDto model)
     {
         var user = await _userManager.FindByNameAsync(username);
-        var existingFavourite = await _movieContext.UserFavouriteTitles
-            .FirstOrDefaultAsync(x => x.UserId == user.Id && x.TitleId == model.TitleId);
+        var existingFavSpec = new UserFavouriteTitleByUserIdTitleIdSpec(user.Id, model.TitleId);
+        var existingFavourite = await _favouriteTitleRepo.FirstOrDefaultAsync(existingFavSpec);
 
         if (existingFavourite != null)
         {
             existingFavourite.Comments = model.Comments;
-            _movieContext.UserFavouriteTitles.Update(existingFavourite);
+            await _favouriteTitleRepo.UpdateAsync(existingFavourite);
         }
         else
         {
-            _movieContext.UserFavouriteTitles.Add(new UserFavouriteTitle
+            await _favouriteTitleRepo.AddAsync(new UserFavouriteTitle
             {
                 UserId = user.Id,
                 TitleId = model.TitleId,
                 Comments = model.Comments
             });
         }
-
-        await _movieContext.SaveChangesAsync();
         
         var userData = await GetUserDto(user);
         return userData.FavouriteMovies;
@@ -74,13 +77,12 @@ public class UserService : IUserService
     public async Task<List<FavouriteMovieDto>> RemoveFavouriteMovie(string username, AddRemoveFavouriteMovieDto model)
     {
         var user = await _userManager.FindByNameAsync(username);
-        var favMovie = await _movieContext.UserFavouriteTitles
-            .FirstOrDefaultAsync(x => x.UserId == user.Id && x.TitleId == model.TitleId);
+        var favMovieSpec = new UserFavouriteTitleByUserIdTitleIdSpec(user.Id, model.TitleId);
+        var favMovie = await _favouriteTitleRepo.FirstOrDefaultAsync(favMovieSpec);
 
         if (favMovie != null)
         {
-            _movieContext.UserFavouriteTitles.Remove(favMovie);
-            await _movieContext.SaveChangesAsync();
+            await _favouriteTitleRepo.DeleteAsync(favMovie);
         }
         
         var userData = await GetUserDto(user);
@@ -101,13 +103,14 @@ public class UserService : IUserService
     
     private async Task<UserDto> GetUserDto(User user)
     {
-        var favMovies = await _movieContext.UserFavouriteTitles.Where(x => x.UserId == user.Id).ToListAsync();
+        var favMoviesSpec = new UserFavouriteTitlesByUserIdSpec(user.Id);
+        var favMovies = await _favouriteTitleRepo.ListAsync(favMoviesSpec);
         var movies = new List<Title>();
 
         if (favMovies.Any())
         {
-            movies = await _movieContext.Titles.Where(x => favMovies.Select(y => y.TitleId).Contains(x.Id)).AddTitleIncludes()
-                .ToListAsync();
+            var movieSpec = new TitlesByUserFavouriteTitleSpec(favMovies.Select(x => x.TitleId));
+            movies = await _titleRepo.ListAsync(movieSpec);
         }
         
         return new UserDto()
