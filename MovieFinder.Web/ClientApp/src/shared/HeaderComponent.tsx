@@ -1,6 +1,6 @@
 import {AppBar, Box, Button, FormControlLabel, FormGroup, styled, Switch, Toolbar, Typography} from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { setDarkMode } from "../core/slices/siteAppearanceSlice";
+import {NavLink} from "react-router-dom";
+import {setDarkMode} from "../core/slices/siteAppearanceSlice";
 import {useAppDispatch, useAppSelector} from "../core/store/configureStore";
 import {fetchCategoriesAsync} from "../core/slices/categorySlice";
 import {useEffect} from "react";
@@ -17,20 +17,20 @@ const navStyles = {
     }
 }
 
-const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+const Offset = styled('div')(({theme}) => theme.mixins.toolbar);
 
-export default function HeaderComponent(){
+export default function HeaderComponent() {
     const dispatch = useAppDispatch();
     const {darkMode} = useAppSelector(state => state.siteAppearance);
     const {user} = useAppSelector(state => state.account);
-    
-    
+
+
     const ChangeDarkMode = (event: any) => {
         dispatch(setDarkMode(event.target.checked));
     }
-    
-    
-    return(
+
+
+    return (
         <>
             <AppBar position='fixed'>
                 <Toolbar sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -52,17 +52,27 @@ export default function HeaderComponent(){
                     </Box>
                     <Box display='flex' alignItems='center'>
                         {!user && (
-                            <Button
-                                color='inherit'
-                                sx={{typography: 'h6'}}
-                                component={NavLink}
-                                to='/login'
-                            >
-                                Sign in
-                            </Button>
+                            <>
+                                <Button
+                                    color='inherit'
+                                    sx={{typography: 'h6'}}
+                                    component={NavLink}
+                                    to='/login'
+                                >
+                                    Sign in
+                                </Button>
+                                <Button
+                                    color='inherit'
+                                    sx={{typography: 'h6'}}
+                                    component={NavLink}
+                                    to='/register'
+                                >
+                                    Register
+                                </Button>
+                            </>
                         )}
                         <PrivateComponent performRedirect={false}>
-                            <SignedInMenu />
+                            <SignedInMenu/>
                         </PrivateComponent>
                         <FormGroup>
                             <FormControlLabel control={<Switch
@@ -74,7 +84,7 @@ export default function HeaderComponent(){
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Offset />
+            <Offset/>
         </>
     )
 }
