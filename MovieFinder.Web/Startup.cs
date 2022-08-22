@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+﻿using System.Text;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using MovieFinder.Web.Configuration;
 using MovieFinder.Web.Middleware;
 
@@ -7,10 +8,12 @@ namespace MovieFinder.Web
     public class Startup
     {
         public IConfiguration _config { get; }
+        public IWebHostEnvironment _env { get; }
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IWebHostEnvironment env)
         {
             _config = config;
+            _env = env;
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -22,6 +25,11 @@ namespace MovieFinder.Web
             services.AddMovieFinderServices(_config);
             
             services.AddCors();
+
+            if (_env.IsDevelopment())
+            {
+                services.AddSpaStaticFiles(config => { config.RootPath = "clientapp/build"; });
+            }
             
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -53,8 +61,23 @@ namespace MovieFinder.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapFallbackToController("Index", "Fallback");
+                if (!env.IsDevelopment())
+                {
+                    endpoints.MapFallbackToController("Index", "Fallback");                    
+                }
             });
+
+            if (env.IsDevelopment())
+            {
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "clientapp";
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseReactDevelopmentServer(npmScript: "start");
+                    }
+                });
+            }
             
         }
     }

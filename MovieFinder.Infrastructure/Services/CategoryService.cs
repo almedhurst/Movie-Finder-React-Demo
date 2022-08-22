@@ -1,24 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieFinder.Core.Dtos;
+using MovieFinder.Core.Entities;
+using MovieFinder.Core.Repositories;
 using MovieFinder.Core.Services;
 using MovieFinder.Infrastructure.Data;
 using MovieFinder.Infrastructure.Extensions;
+using MovieFinder.Infrastructure.Specifications;
 
 namespace MovieFinder.Infrastructure.Services;
 
 public class CategoryService : ICategoryService
 {
-    private readonly MovieContext _context;
+    private readonly IGenericRepository<Category> _categoryRepo;
 
-    public CategoryService(MovieContext context)
+    public CategoryService(IGenericRepository<Category> categoryRepo)
     {
-        _context = context;
+        _categoryRepo = categoryRepo;
     }
     public async Task<IEnumerable<NameDto>> GetCategories()
     {
-        var query = _context.Categories.OrderBy(x => x.Name);
-
-        var data = await query.ToListAsync();
+        var spec = new CategoryOrderByNameSpec();
+        var data = await _categoryRepo.ListAsync(spec);
 
         return data.ToNameDtoList();
     }

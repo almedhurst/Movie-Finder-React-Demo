@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MovieFinder.Core.Entities;
+using MovieFinder.Core.Repositories;
 using MovieFinder.Core.Services;
 using MovieFinder.Infrastructure.Data;
+using MovieFinder.Infrastructure.Repositories;
 using MovieFinder.Infrastructure.Services;
 
 namespace MovieFinder.Web.Configuration;
@@ -41,6 +43,7 @@ public static class MovieFinderServiceConfiguration
             
         services.AddAuthorization();
 
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMovieService, MovieService>();
         services.AddScoped<ICategoryService, CategoryService>();
