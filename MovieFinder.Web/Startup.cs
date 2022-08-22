@@ -23,7 +23,6 @@ namespace MovieFinder.Web
             
             services.AddCors();
             
-            services.AddSpaStaticFiles(config => { config.RootPath = "clientapp/build"; });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -51,16 +50,12 @@ namespace MovieFinder.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            
-            app.UseSpa(spa =>
+            app.UseEndpoints(endpoints =>
             {
-                spa.Options.SourcePath = "clientapp";
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
+            
         }
     }
 }
