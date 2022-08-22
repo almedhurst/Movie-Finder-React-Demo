@@ -3,6 +3,8 @@ import {Box, Button, Card, CardActions, CardContent, Chip, Grid, Stack, Typograp
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import {truncate, urlFriendly} from "../../core/utilities/stringUtil";
 import {Link} from "react-router-dom";
+import PrivateComponent from "../../shared/PrivateComponent";
+import MovieUserActions from "./MovieUserActions";
 
 interface Props {
     movie: MovieDto;
@@ -45,8 +47,18 @@ export default function MovieGridItem({movie, truncateStoryLine}: Props) {
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" component={Link} to={`/movie/${urlFriendly(movie.name)}/${movie.id}`}>Learn
-                        More</Button>
+                    <Grid container>
+                        <Grid item xs={9}>
+                            <Button size="small" component={Link} to={`/movie/${urlFriendly(movie.name)}/${movie.id}`}>Learn
+                                More</Button>
+                        </Grid>
+                        <Grid item xs={3} sx={{textAlign: 'right'}}>
+                            <PrivateComponent performRedirect={false}>
+                                <MovieUserActions movieId={movie.id} />
+                            </PrivateComponent>
+                        </Grid>
+                    </Grid>
+                    
                 </CardActions>
             </Box>
         </Card>

@@ -4,13 +4,15 @@ import {siteAppearanceSlice} from "../slices/siteAppearanceSlice";
 import {categorySlice} from "../slices/categorySlice";
 import {randomMovieSlice} from "../slices/randomMovieSlice";
 import {movieSlice} from "../slices/movieSlice";
+import {accountSlice} from "../slices/accountSlice";
 
 export const store = configureStore({
     reducer: {
         siteAppearance: siteAppearanceSlice.reducer,
         category: categorySlice.reducer,
         randomMovie: randomMovieSlice.reducer,
-        movie: movieSlice.reducer
+        movie: movieSlice.reducer,
+        account: accountSlice.reducer
     }
 });
 

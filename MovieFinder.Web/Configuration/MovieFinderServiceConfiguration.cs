@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using MovieFinder.Core.Entities;
 using MovieFinder.Core.Services;
 using MovieFinder.Infrastructure.Data;
 using MovieFinder.Infrastructure.Services;
@@ -15,8 +19,32 @@ public static class MovieFinderServiceConfiguration
                 x => x.MigrationsAssembly("MovieFinder.Infrastructure"));
         });
 
+        services.AddIdentityCore<User>(opt =>
+        {
+            opt.User.RequireUniqueEmail = true;
+        }).AddEntityFrameworkStores<MovieContext>();
+        
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                        .GetBytes(config["JWTSettings:TokenKey"]))
+                };
+            });
+            
+            
+        services.AddAuthorization();
+
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMovieService, MovieService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

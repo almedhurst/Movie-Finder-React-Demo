@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieFinder.Core.Entities;
 
 namespace MovieFinder.Infrastructure.Data;
 
-public class MovieContext : DbContext
+public class MovieContext : IdentityDbContext<User>
 {
     public MovieContext(DbContextOptions<MovieContext> options) : base(options)
     {
@@ -20,6 +21,7 @@ public class MovieContext : DbContext
     public DbSet<TitleDirector> TitleDirectors { get; set; }
     public DbSet<TitleWriter> TitleWriters { get; set; }
     public DbSet<Writer> Writers { get; set; }
+    public DbSet<UserFavouriteTitle> UserFavouriteTitles { get; set; }
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

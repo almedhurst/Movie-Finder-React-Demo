@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using MovieFinder.Infrastructure.Data;
 using MovieFinder.Web.Configuration;
 using MovieFinder.Web.Middleware;
 
@@ -20,14 +17,11 @@ namespace MovieFinder.Web
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie Finder API", Version = "v1" });
-                
-            });
+            services.AddSwagger();
 
             services.AddMovieFinderServices(_config);
             
+            services.AddCors();
             
             services.AddSpaStaticFiles(config => { config.RootPath = "clientapp/build"; });
         }
@@ -46,8 +40,16 @@ namespace MovieFinder.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+            
+            app.UseCors(opt =>
+            {
+                opt.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             
