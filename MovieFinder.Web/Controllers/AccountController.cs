@@ -55,5 +55,23 @@ public class AccountController : BaseApiController
         var data = await _userService.RemoveFavouriteMovie(User.Identity.Name, model);
         return Ok(data);
     }
+
+    [HttpPost]
+    public async Task<ActionResult> Register(RegisterDto model)
+    {
+        var result = await _userService.RegisterUser(model);
+
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.Code, error.Description);
+            }
+
+            return ValidationProblem();
+        }
+
+        return StatusCode(201);
+    }
     
 }

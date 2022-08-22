@@ -63,7 +63,7 @@ export const fetchFavouriteMoviesAsync = createAsyncThunk<FavouriteMovieDto[]>(
     async (_, thunkAPI) => {
         thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem(userLocalStorageKey)!)));
         try {
-            return await AccountService.GetFavouriteMovie();
+            return await AccountService.getFavouriteMovie();
         } catch (error: any){
             return thunkAPI.rejectWithValue({error: error.data});
         }
@@ -77,7 +77,7 @@ export const addFavouriteMoviesAsync = createAsyncThunk<FavouriteMovieDto[], Add
     async (data, thunkAPI) => {
         thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem(userLocalStorageKey)!)));
         try {
-            return await AccountService.AddFavouriteMovie(data);
+            return await AccountService.addFavouriteMovie(data);
         } catch (error: any){
             return thunkAPI.rejectWithValue({error: error.data});
         }
@@ -91,7 +91,7 @@ export const removeFavouriteMoviesAsync = createAsyncThunk<FavouriteMovieDto[], 
     async (data, thunkAPI) => {
         thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem(userLocalStorageKey)!)));
         try {
-            return await AccountService.DeleteFavouriteMovie(data);
+            return await AccountService.deleteFavouriteMovie(data);
         } catch (error: any){
             return thunkAPI.rejectWithValue({error: error.data});
         }

@@ -86,6 +86,18 @@ public class UserService : IUserService
         var userData = await GetUserDto(user);
         return userData.FavouriteMovies;
     }
+
+    public async Task<IdentityResult> RegisterUser(RegisterDto model)
+    {
+        var user = new User
+        {
+            GivenName = model.GivenName,
+            UserName = model.Username,
+            Email = model.Email
+        };
+
+        return await _userManager.CreateAsync(user, model.Password);
+    }
     
     private async Task<UserDto> GetUserDto(User user)
     {
@@ -110,4 +122,6 @@ public class UserService : IUserService
             }).ToList()
         };
     }
+    
+    
 }

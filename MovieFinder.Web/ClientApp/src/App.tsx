@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PrivateComponent from "./shared/PrivateComponent";
 import FavouriteMovies from "./features/account/FavouriteMovies";
 import LoadingComponent from "./shared/LoadingComponent";
+import Register from "./features/account/Register";
 
 function App() {
     const dispatch = useAppDispatch();
@@ -53,6 +54,7 @@ function App() {
                 <Routes>
                     <Route path='/' element={<MovieHome/>}/>
                     <Route path='/login' element={<Login />}/>
+                    <Route path='/register' element={<Register />}/>
                     <Route path='/movie/:name/:id' element={<MovieDetails />}/>
                     <Route path='/category/:name/:id' element={<Category />}/>
                     <Route path='/account' element={

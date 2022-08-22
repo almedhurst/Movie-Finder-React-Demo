@@ -1,5 +1,5 @@
 import {FieldValues, useForm} from "react-hook-form";
-import {useLocation, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useAppDispatch } from "../../core/store/configureStore";
 import {Avatar, Box, Container, Grid, Paper, TextField, Typography} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
@@ -43,6 +43,7 @@ export default function Login(){
                     })}
                     error={!!errors.username}
                     helperText={errors?.username?.message?.toString()}
+                    autoComplete="off"
                 />
                 <TextField
                     margin="normal"
@@ -54,6 +55,7 @@ export default function Login(){
                     })}
                     error={!!errors.password}
                     helperText={errors?.password?.message?.toString()}
+                    autoComplete="off"
                 />
                 <LoadingButton
                     disabled={!isValid}
@@ -65,6 +67,13 @@ export default function Login(){
                 >
                     Sign In
                 </LoadingButton>
+                <Grid container>
+                    <Grid item>
+                        <Link to="/register">
+                            {"Don't have an account? Sign Up"}
+                        </Link>
+                    </Grid>
+                </Grid>
             </Box>
         </Container>
     );
