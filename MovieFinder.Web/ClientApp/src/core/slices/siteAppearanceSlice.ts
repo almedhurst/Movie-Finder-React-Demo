@@ -28,8 +28,8 @@ export const siteAppearanceSlice = createSlice({
         loadingSaveState: (state) => {
             var appearenceData = localStorage.getItem(loadStorageKey);
             var appearanceJson = appearenceData !== null ? JSON.parse(appearenceData) : null;
-            if(typeof appearanceJson.darkMode === 'boolean') state.darkMode = appearanceJson.darkMode;
-            if(typeof appearanceJson.listView === 'number') state.listView = appearanceJson.listView;
+            if(typeof appearanceJson?.darkMode === 'boolean') state.darkMode = appearanceJson.darkMode;
+            if(typeof appearanceJson?.listView === 'number') state.listView = appearanceJson.listView;
         }
     }
 })
