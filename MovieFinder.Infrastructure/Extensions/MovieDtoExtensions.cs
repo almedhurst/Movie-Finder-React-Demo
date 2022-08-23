@@ -9,35 +9,7 @@ public static class MovieDtoExtensions
     {
         if (data == null) return Enumerable.Empty<MovieDto>();
         
-        return data.Select(x => new MovieDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Year = x.Year,
-                RunTime = x.Runtime,
-                ReleaseDate = x.ReleaseDate,
-                StoryLine = x.StoryLine,
-                Categories = x.TitleCategories.Select(c => new CategoryDto()
-                {
-                    Id = c.Category.Id,
-                    Name = c.Category.Name
-                }).OrderBy(c => c.Name),
-                Directors = x.TitleDirectors.Select(d => new NameDto
-                {
-                    Id = d.Director.Id,
-                    Name = d.Director.Name
-                }).OrderBy(d => d.Name),
-                Writers = x.TitleWriters.Select(w => new NameDto()
-                {
-                    Id = w.Writer.Id,
-                    Name = w.Writer.Name
-                }).OrderBy(w => w.Name),
-                Actors = x.TitleActors.Select(a => new NameDto()
-                {
-                    Id = a.Actor.Id,
-                    Name = a.Actor.Name
-                }).OrderBy(a => a.Name)
-            }
+        return data.Select(x => x.ToMovieDto()
         );
     }
 
