@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieFinder.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieFinder.Web", "MovieFinder.Web\MovieFinder.Web.csproj", "{6EF2B303-EB6D-40F5-BD3D-B4BACB35AC3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieFinder.Infrastructure.Tests", "Tests\MovieFinder.Infrastructure.Tests\MovieFinder.Infrastructure.Tests.csproj", "{880161A2-DE54-4CFB-B630-085F60628C65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6EF2B303-EB6D-40F5-BD3D-B4BACB35AC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EF2B303-EB6D-40F5-BD3D-B4BACB35AC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EF2B303-EB6D-40F5-BD3D-B4BACB35AC3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{880161A2-DE54-4CFB-B630-085F60628C65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880161A2-DE54-4CFB-B630-085F60628C65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880161A2-DE54-4CFB-B630-085F60628C65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880161A2-DE54-4CFB-B630-085F60628C65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

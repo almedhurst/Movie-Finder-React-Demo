@@ -31,8 +31,10 @@ public static class MovieFinderServiceConfiguration
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = config["JWTSettings:ShouldValidateIssuer"] == "true",
+                    ValidateAudience = config["JWTSettings:ShouldValidateAudience"] == "true",
+                    ValidIssuer = config["JWTSettings:Issuer"],
+                    ValidAudience = config["JWTSettings:Audience"],
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
