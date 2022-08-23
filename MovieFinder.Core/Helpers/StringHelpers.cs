@@ -23,6 +23,7 @@ public static class StringHelpers
     
     public static string RandomString(int length)
     {
+        if (length < 0) throw new ArgumentOutOfRangeException("length", length, "length cannot be negative");
         return new string(Enumerable.Repeat(CharList, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
