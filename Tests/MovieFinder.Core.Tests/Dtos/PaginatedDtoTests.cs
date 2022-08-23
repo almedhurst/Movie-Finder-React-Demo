@@ -1,6 +1,6 @@
 ﻿using MovieFinder.Core.Dtos;
 
-namespace MovieFinder.Core.Test.Dtos;
+namespace MovieFinder.Core.Tests.Dtos;
 
 public class PaginatedDtoTests
 {

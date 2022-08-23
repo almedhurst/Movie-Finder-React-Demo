@@ -32,7 +32,7 @@ public class MoviesController : BaseApiController
         var data = await _movieService.GetMovie(movieId);
         if (data == null) return NotFound();
 
-        return data;
+        return Ok(data);
     }
 
     [HttpGet]

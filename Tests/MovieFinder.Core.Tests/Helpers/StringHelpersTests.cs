@@ -1,6 +1,6 @@
 ﻿using MovieFinder.Core.Helpers;
 
-namespace MovieFinder.Core.Test.Helpers;
+namespace MovieFinder.Core.Tests.Helpers;
 
 public class StringHelpersTests
 {
@@ -81,5 +81,25 @@ public class StringHelpersTests
     {
         //Act & Assert
         Should.Throw<ArgumentOutOfRangeException>(() => StringHelpers.RandomString(length));
+    }
+
+    [Theory]
+    [InlineData("pAR FoR thE COuRse", "Par For The Course")]
+    [InlineData("a cOLD fish", "A Cold Fish")]
+    [InlineData("A BIte aT ThE cHeRRy", "A Bite At The Cherry")]
+    [InlineData("tHERe's no i In tEAM", "There's No I In Team")]
+    [InlineData("PLaYING fOR KEePs", "Playing For Keeps")]
+    [InlineData("tHRow In tHE toweL", "Throw In The Towel")]
+    [InlineData("a DOg in tHE mAnGeR", "A Dog In The Manger")]
+    [InlineData("LonG in THe tootH", "Long In The Tooth")]
+    [InlineData("swinGING foR the fENCES", "Swinging For The Fences")]
+    [InlineData("kEEp YoUR eyeS PeELeD", "Keep Your Eyes Peeled")]
+    public void ToTitleCase_ReturnExpectedOutput(string input, string expected)
+    {
+        //Act
+        var result = input.toTitleCase();
+        
+        //Assert
+        result.ShouldBe(expected);
     }
 }
