@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MovieFinder.Core.Dtos;
+using MovieFinder.Core.Entities;
 
 namespace MovieFinder.Core.Services;
 

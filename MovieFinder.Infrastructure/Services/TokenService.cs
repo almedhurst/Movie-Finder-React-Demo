@@ -11,13 +11,11 @@ namespace MovieFinder.Infrastructure.Services;
 
 public class TokenService : ITokenService
 {
-    private readonly UserManager<User> _userManager;
     private readonly IConfiguration _config;
 
-    public TokenService(UserManager<User> userManager, IConfiguration config)
+    public TokenService(IConfiguration config)
     {
         _config = config;
-        _userManager = userManager;
     }
     
     public string GenerateToken(User user)
@@ -33,8 +31,8 @@ public class TokenService : ITokenService
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
         var tokenOptions = new JwtSecurityToken(
-            issuer: null,
-            audience: null,
+            issuer: _config["JWTSettings:Issuer"],
+            audience: _config["JWTSettings:Audience"],
             claims: claims,
             expires: DateTime.Now.AddDays(7),
             signingCredentials: creds

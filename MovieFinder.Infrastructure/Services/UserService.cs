@@ -101,7 +101,7 @@ public class UserService : IUserService
         return await _userManager.CreateAsync(user, model.Password);
     }
     
-    private async Task<UserDto> GetUserDto(User user)
+    public virtual async Task<UserDto> GetUserDto(User user)
     {
         var favMoviesSpec = new UserFavouriteTitlesByUserIdSpec(user.Id);
         var favMovies = await _favouriteTitleRepo.ListAsync(favMoviesSpec);
